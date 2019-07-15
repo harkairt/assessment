@@ -1027,18 +1027,18 @@ class NumberPhraserTest {
     @CsvSource(
         value = [
             "1000, one thousand",
-            "1001, one thousand one",
-            "2001, two thousand one",
+            "1001, one thousand and one",
+            "2001, two thousand and one",
             "2111, two thousand one hundred and eleven",
             "11000, eleven thousand",
-            "11001, eleven thousand one",
-            "17001, seventeen thousand one",
+            "11001, eleven thousand and one",
+            "17001, seventeen thousand and one",
             "100000, one hundred thousand",
-            "100010, one hundred thousand ten",
+            "100010, one hundred thousand and ten",
             "111100, one hundred and eleven thousand one hundred",
-            "130010, one hundred and thirty thousand ten",
-            "270010, two hundred and seventy thousand ten",
-            "4600022, four million six hundred thousand twenty-two"
+            "130010, one hundred and thirty thousand and ten",
+            "270010, two hundred and seventy thousand and ten",
+            "4600022, four million six hundred thousand and twenty-two"
         ], delimiter = ','
     )
     fun `Should phrase thousands and onwards`(numberAsString: String, expectedPhrase: String) {
@@ -1048,9 +1048,9 @@ class NumberPhraserTest {
     @ParameterizedTest
     @CsvSource(
         value = [
-            "400000004, four hundred million four",
-            "70000000000032, seventy trillion thirty-two",
-            "70000003000032, seventy trillion three million thirty-two",
+            "400000004, four hundred million and four",
+            "70000000000032, seventy trillion and thirty-two",
+            "70000003000032, seventy trillion three million and thirty-two",
             "1000000000000000, one quadrillion"
         ], delimiter = ','
     )

@@ -8,6 +8,9 @@ class NumberPhraser {
 
         val triplets = splitIntoTriplets(number)
 
+        if (triplets.size > 1 && triplets.last().numericValue in 1 until 100)
+            return phraseWithPrefixingLastNumberPartWithAnd(triplets)
+
         return triplets.concatPhrase()
     }
 
@@ -17,5 +20,12 @@ class NumberPhraser {
             triplet.scaleNotation = scaleNotations[index]
         }
         return triplets
+    }
+
+    private fun phraseWithPrefixingLastNumberPartWithAnd(numberPartList: List<Triplet>): String {
+        val lastNumberPart = numberPartList.last()
+        val numberPartsButLast = numberPartList.minus(lastNumberPart)
+        val joined = numberPartsButLast.concatPhrase()
+        return "$joined and ${lastNumberPart.phrase()}"
     }
 }
