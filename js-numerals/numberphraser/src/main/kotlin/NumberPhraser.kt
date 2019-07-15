@@ -6,12 +6,25 @@ class NumberPhraser {
         if (number == "0")
             return "zero"
 
+        if (number.length == 4 && number.toInt() in 1100..2000)
+            return handleMultipleHundred(number)
+
         val triplets = splitIntoTriplets(number)
 
         if (triplets.size > 1 && triplets.last().numericValue in 1 until 100)
             return phraseWithPrefixingLastNumberPartWithAnd(triplets)
 
         return triplets.concatPhrase()
+    }
+
+    private fun handleMultipleHundred(number: String): String {
+        val hundredsPartPhrased = Triplet(number.take(2), "hundred").phrase()
+        val remainderPhrased = Triplet(number.takeLast(2)).phrase()
+
+        return if (remainderPhrased.any())
+            "$hundredsPartPhrased and $remainderPhrased"
+        else
+            hundredsPartPhrased
     }
 
     private fun splitIntoTriplets(number: String): List<Triplet> {

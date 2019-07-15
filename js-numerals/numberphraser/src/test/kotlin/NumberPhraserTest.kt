@@ -1026,6 +1026,22 @@ class NumberPhraserTest {
     @ParameterizedTest
     @CsvSource(
         value = [
+            "1100, eleven hundred",
+            "1101, eleven hundred and one",
+            "1111, eleven hundred and eleven",
+            "1234, twelve hundred and thirty-four",
+            "1580, fifteen hundred and eighty",
+            "1703, seventeen hundred and three",
+            "1999, nineteen hundred and ninety-nine"
+        ], delimiter = ','
+    )
+    fun `Should phrase multiple hundred`(numberAsString: String, expectedPhrase: String) {
+        assertPhrasedValue(numberAsString, expectedPhrase)
+    }
+
+    @ParameterizedTest
+    @CsvSource(
+        value = [
             "1000, one thousand",
             "1001, one thousand and one",
             "2001, two thousand and one",
