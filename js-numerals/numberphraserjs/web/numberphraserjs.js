@@ -121,9 +121,10 @@
   };
   function NumberConverterView(presenter) {
     this.presenter_0 = presenter;
-    var tmp$, tmp$_0;
+    var tmp$, tmp$_0, tmp$_1;
     this.numeralInput_0 = Kotlin.isType(tmp$ = document.getElementById('numeralInput'), HTMLInputElement) ? tmp$ : throwCCE();
     this.phrasedOutput_0 = Kotlin.isType(tmp$_0 = document.getElementById('phrasedOutput'), HTMLParagraphElement) ? tmp$_0 : throwCCE();
+    this.numeralInputSubmitButton_0 = Kotlin.isType(tmp$_1 = document.getElementById('numeralInputSubmitButton'), HTMLButtonElement) ? tmp$_1 : throwCCE();
   }
   NumberConverterView.prototype.printNumber_61zpoe$ = function (phrasedNumber) {
     this.phrasedOutput_0.innerText = phrasedNumber;
@@ -136,8 +137,15 @@
       return Unit;
     };
   }
+  function NumberConverterView$show$lambda_0(this$NumberConverterView) {
+    return function (event) {
+      this$NumberConverterView.presenter_0.phrasingRequested_61zpoe$(this$NumberConverterView.numeralInput_0.value);
+      return Unit;
+    };
+  }
   NumberConverterView.prototype.show = function () {
     window.onkeydown = NumberConverterView$show$lambda(this);
+    this.numeralInputSubmitButton_0.onclick = NumberConverterView$show$lambda_0(this);
   };
   NumberConverterView.$metadata$ = {
     kind: Kind_CLASS,

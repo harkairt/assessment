@@ -7,6 +7,10 @@
 }
 
 .numeralInput{
-	
     width: 500px;
+}
+
+.numeralInputSubmitButton{
+	height: 30px;
+    width: 100px;
 }

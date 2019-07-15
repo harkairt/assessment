@@ -1,3 +1,4 @@
+import org.w3c.dom.HTMLButtonElement
 import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.HTMLParagraphElement
 import org.w3c.dom.events.KeyboardEvent
@@ -8,6 +9,7 @@ class NumberConverterView(private val presenter: NumberConverterContract.Present
 
     private val numeralInput = document.getElementById("numeralInput") as HTMLInputElement
     private val phrasedOutput = document.getElementById("phrasedOutput") as HTMLParagraphElement
+    private val numeralInputSubmitButton = document.getElementById("numeralInputSubmitButton") as HTMLButtonElement
 
     override fun printNumber(phrasedNumber: String) {
         phrasedOutput.innerText = phrasedNumber
@@ -18,6 +20,10 @@ class NumberConverterView(private val presenter: NumberConverterContract.Present
             if (event is KeyboardEvent && "Enter" == event.key) {
                 presenter.phrasingRequested(numeralInput.value)
             }
+        }
+
+        numeralInputSubmitButton.onclick = {event ->
+            presenter.phrasingRequested(numeralInput.value)
         }
     }
 
