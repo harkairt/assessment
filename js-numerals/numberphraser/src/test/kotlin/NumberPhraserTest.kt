@@ -1023,6 +1023,63 @@ class NumberPhraserTest {
         assertPhrasedValue(numberAsString, expectedPhrase)
     }
 
+    @ParameterizedTest
+    @CsvSource(
+        value = [
+            "1000, one thousand",
+            "1001, one thousand one",
+            "2001, two thousand one",
+            "2111, two thousand one hundred and eleven",
+            "11000, eleven thousand",
+            "11001, eleven thousand one",
+            "17001, seventeen thousand one",
+            "100000, one hundred thousand",
+            "100010, one hundred thousand ten",
+            "111100, one hundred and eleven thousand one hundred",
+            "130010, one hundred and thirty thousand ten",
+            "270010, two hundred and seventy thousand ten",
+            "4600022, four million six hundred thousand twenty-two"
+        ], delimiter = ','
+    )
+    fun `Should phrase thousands and onwards`(numberAsString: String, expectedPhrase: String) {
+        assertPhrasedValue(numberAsString, expectedPhrase)
+    }
+
+    @ParameterizedTest
+    @CsvSource(
+        value = [
+            "400000004, four hundred million four",
+            "70000000000032, seventy trillion thirty-two",
+            "70000003000032, seventy trillion three million thirty-two",
+            "1000000000000000, one quadrillion"
+        ], delimiter = ','
+    )
+    fun `Should not phrase scale of empty triplet`(numberAsString: String, expectedPhrase: String) {
+        assertPhrasedValue(numberAsString, expectedPhrase)
+    }
+
+    @ParameterizedTest
+    @CsvSource(
+        value = [
+            "342423432432123234, three hundred and forty-two quadrillion four hundred and twenty-three trillion four " +
+                    "hundred and thirty-two billion four hundred and thirty-two million one hundred and twenty-three " +
+                    "thousand two hundred and thirty-four",
+            "9874659827421349263474263849276, nine nonillion eight hundred and seventy-four octillion six hundred and " +
+                    "fifty-nine septillion eight hundred and twenty-seven sextillion four hundred and twenty-one " +
+                    "quintillion three hundred and forty-nine quadrillion two hundred and sixty-three trillion four " +
+                    "hundred and seventy-four billion two hundred and sixty-three million eight hundred and forty-nine " +
+                    "thousand two hundred and seventy-six",
+            "800460000306749087463098432709467460900060804, eight hundred tredecillion four hundred and sixty " +
+                    "duodecillion three hundred and six decillion seven hundred and forty-nine nonillion eighty-seven " +
+                    "octillion four hundred and sixty-three septillion ninety-eight sextillion four hundred and " +
+                    "thirty-two quintillion seven hundred and nine quadrillion four hundred and sixty-seven trillion " +
+                    "four hundred and sixty billion nine hundred million sixty thousand eight hundred and four"
+        ], delimiter = ','
+    )
+    fun `Should not overflow`(numberAsString: String, expectedPhrase: String) {
+        assertPhrasedValue(numberAsString, expectedPhrase)
+    }
+
     private fun assertPhrasedValue(numberAsString: String, expectedSpelledNumber: String) {
         val phrasedNumber = numberPhraser.phraseNumber(numberAsString)
         assert(phrasedNumber == expectedSpelledNumber) {
