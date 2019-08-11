@@ -28,7 +28,8 @@ annotation class ViewModelKey(val value : KClass<out ViewModel>)
 
 @Component(modules = [
     ViewModelModule::class,
-    //RepositoryBindingModule::class,
+    RepositoryBindingModule::class,
+    ServiceModule::class,
     ContextModule::class
 ])
 interface ViewModelComponent{
