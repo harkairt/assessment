@@ -1,6 +1,7 @@
 package com.chain.githubissues.presentation.issueList
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.chain.githubissues.domain.entity.Issue
 import com.chain.githubissues.domain.entity.IssueListParams
@@ -19,6 +20,9 @@ class IssueListViewModel @Inject constructor(private val listIssuesUseCase: List
     private val issueListCache = mutableMapOf<IssueListParams, List<Issue>>()
     val issueListLiveData: MutableLiveData<List<Issue>> = MutableLiveData()
 
+    private val _loadingInProgress: MutableLiveData<Boolean> = MutableLiveData()
+    val loadingInProgress: LiveData<Boolean> = _loadingInProgress
+
     var issueListSource: PublishSubject<List<Issue>> = PublishSubject.create()
 
     init {
@@ -36,9 +40,15 @@ class IssueListViewModel @Inject constructor(private val listIssuesUseCase: List
             return
         }
 
+        _loadingInProgress.postValue(true)
+        issueListSource.onNext(listOf())
+
         listIssuesUseCase.listIssues(param)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .doFinally {
+                _loadingInProgress.postValue(false)
+            }
             .subscribe({
                 issueListSource.onNext(it)
                 issueListCache[param] = it
