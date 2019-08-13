@@ -5,7 +5,7 @@ import java.time.LocalDateTime
 
 class Issue(
     val body: String? = "",
-    val created_at: LocalDateTime,
+    val created_at: LocalDateTime = LocalDateTime.now(),
     val closed_at: LocalDateTime? = null,
     val id: Int? = 0,
     val labels: List<Label>? = listOf(),

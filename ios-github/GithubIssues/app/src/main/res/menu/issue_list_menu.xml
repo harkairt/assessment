@@ -1,0 +1,10 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.chain.example1.screen.completion.TestCompActivity">
+    <item
+        android:id="@+id/issueState"
+        android:title="open"
+        app:showAsAction="always"
+        />
+</menu>

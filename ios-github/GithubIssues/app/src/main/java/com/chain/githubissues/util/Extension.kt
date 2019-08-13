@@ -5,6 +5,14 @@ import android.content.res.Resources
 import android.view.View
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.PublishSubject
 import java.time.Duration
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -12,7 +20,7 @@ import java.time.format.DateTimeFormatter
 val LocalDateTime.agoFormat: String
     get() {
         val duration = Duration.between(this, LocalDateTime.now())
-        return when{
+        return when {
             duration.toMinutes() == 1.toLong() -> "1 minute ago"
             duration.toMinutes() < 60 -> "${duration.toMinutes()} minutes ago"
             duration.toHours() == 1.toLong() -> "1 hour ago"
@@ -31,11 +39,11 @@ fun Context.getResourceColor(colorResourceId: Int): Int {
 fun View.getResourceColor(colorResourceId: Int): Int =
     this.context.getResourceColor(colorResourceId)
 
-fun LinearLayout.LayoutParams.setLeftMargin(value : Int){
+fun LinearLayout.LayoutParams.setLeftMargin(value: Int) {
     this.setMargins(value, topMargin, rightMargin, bottomMargin)
 }
 
-fun LinearLayout.LayoutParams.setRightMargin(value : Int){
+fun LinearLayout.LayoutParams.setRightMargin(value: Int) {
     this.setMargins(leftMargin, topMargin, value, bottomMargin)
 }
 
@@ -46,4 +54,19 @@ val Int.dp: Int
 val Int.px: Int
     get() = (this * Resources.getSystem().displayMetrics.density).toInt()
 
-fun wrappingParams() = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+fun wrappingParams() = LinearLayout.LayoutParams(
+    LinearLayout.LayoutParams.WRAP_CONTENT,
+    LinearLayout.LayoutParams.WRAP_CONTENT
+)
+
+fun <T> PublishSubject<T>.postInto(liveData: MutableLiveData<T>, onError: (Throwable) -> Unit) : Disposable {
+    return this.subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(
+            {
+                liveData.postValue(it)
+            },
+            {
+                onError(it)
+            })
+}

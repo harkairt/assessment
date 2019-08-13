@@ -12,7 +12,7 @@ interface GithubWebservice {
     fun getIssues(@Path("author") author: String,
                   @Path("repo") repo: String,
                   @Query("state") state: String = "all",
-                  @Query("per_page") perPage: Int = 100)
+                  @Query("per_page") perPage: Int = 50)
             : Single<List<Issue>>
 
 

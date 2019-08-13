@@ -1,9 +1,7 @@
 package com.chain.githubissues.presentation.issueList
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,10 +10,11 @@ import com.chain.githubissues.Injector
 import com.chain.githubissues.R
 import com.chain.githubissues.databinding.IssueListFragmentBinding
 import com.chain.githubissues.di.ViewModelFactory
+import com.chain.githubissues.domain.entity.IssueState
 import com.chain.githubissues.presentation.common.BaseFragment
 import javax.inject.Inject
 
-class IssueListFragment : BaseFragment(){
+class IssueListFragment : BaseFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
@@ -24,9 +23,25 @@ class IssueListFragment : BaseFragment(){
         viewModelFactory.getFragmentScopedViewModel(IssueListViewModel::class)
     }
 
+    lateinit var listIssueStateSwitchMenuItem: MenuItem
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Injector.get().injectInto(this)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.issue_list_menu, menu)
+        listIssueStateSwitchMenuItem = menu.findItem(R.id.issueState)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.issueState -> switchIssueStateFilter(item)
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -49,12 +64,23 @@ class IssueListFragment : BaseFragment(){
             adapter = IssueListAdapter {
                 onClickAction = { issue ->
                     Toast.makeText(
-                            root.context,
-                            "${issue.title}",
-                            Toast.LENGTH_SHORT
+                        root.context,
+                        "${issue.title}",
+                        Toast.LENGTH_SHORT
                     ).show()
                 }
             }
         }
     }
+
+    private fun switchIssueStateFilter(item: MenuItem) : Boolean {
+        val currentIssueState = IssueState.from(item.title)
+        val newIssueState = currentIssueState.flip()
+
+        issueListViewModel.requestIssueList(newIssueState)
+        listIssueStateSwitchMenuItem.title = newIssueState.toString()
+
+        return true
+    }
+
 }

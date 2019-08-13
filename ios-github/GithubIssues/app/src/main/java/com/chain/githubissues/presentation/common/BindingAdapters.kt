@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chain.githubissues.R
 import com.chain.githubissues.domain.entity.IssueState
@@ -28,6 +29,9 @@ fun <T> setData(recyclerView: RecyclerView, data: T) {
     if (recyclerView.adapter is BindableAdapter<*>) {
         (recyclerView.adapter as BindableAdapter<T>).bindData(data)
         recyclerView.scheduleLayoutAnimation()
+
+        val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+        layoutManager.scrollToPositionWithOffset(0, 0)
     }
 }
 
@@ -64,7 +68,9 @@ fun addLabels(viewGroup: ViewGroup, labelList: List<Label>) {
 
     if (labelList.isEmpty()) {
         viewGroup.visibility = View.GONE
-    }
+        return
+    } else
+        viewGroup.visibility = View.VISIBLE
 
     labelList.forEach {
         viewGroup.addView(TextView(viewGroup.context, null, 0, R.style.labelTextStyle).apply {
