@@ -3,6 +3,7 @@ package com.chain.githubissues.di
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.chain.githubissues.presentation.AViewModel
+import com.chain.githubissues.presentation.issueList.IssueListViewModel
 import dagger.Binds
 import dagger.Component
 import dagger.MapKey
@@ -44,6 +45,6 @@ interface ViewModelModule{
 
     @Binds
     @IntoMap
-    @ViewModelKey(AViewModel::class)
-    fun bindAViewModel(viewModel: AViewModel) : ViewModel
+    @ViewModelKey(IssueListViewModel::class)
+    fun bindIssueListViewModel(viewModel: IssueListViewModel) : ViewModel
 }

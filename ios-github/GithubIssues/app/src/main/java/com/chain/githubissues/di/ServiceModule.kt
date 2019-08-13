@@ -1,6 +1,8 @@
 package com.chain.githubissues.di
 
+import com.chain.githubissues.adapter.LocalDateTimeAdapter
 import com.chain.githubissues.data.GithubWebservice
+import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
@@ -12,10 +14,16 @@ class ServiceModule {
 
     private val retrofit: Retrofit by lazy {
         Retrofit.Builder()
-            .baseUrl("https://api.github.com/")
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .addConverterFactory(MoshiConverterFactory.create())
-            .build()
+                .baseUrl("https://api.github.com/")
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(
+                        MoshiConverterFactory.create(
+                                Moshi.Builder()
+                                        .add(LocalDateTimeAdapter())
+                                        .build()
+                        )
+                )
+                .build()
     }
 
     @Provides

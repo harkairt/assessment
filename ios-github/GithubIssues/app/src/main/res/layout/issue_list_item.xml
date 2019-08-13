@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="issue"
+            type="com.chain.githubissues.domain.entity.Issue" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        app:cardElevation="3dp">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp">
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="?primaryFontFace"
+                    android:text="@{issue.title}"
+                    android:textColor="@color/primaryDarkText"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/author"
+                    tools:text="Add support for ahead-of-time (AOT) compilation, thank you kindly" />
+
+                <TextView
+                    android:id="@+id/dateInformation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="1dp"
+                    android:fontFamily="@font/josefin_sans_semibold"
+                    android:text="@{issue.relevanteDateInformation}"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toEndOf="@+id/imageView"
+                    app:layout_constraintTop_toTopOf="@+id/imageView"
+                    tools:text="opened 14 hours ago" />
+
+                <TextView
+                    android:id="@+id/author"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginEnd="8dp"
+                    android:fontFamily="@font/josefin_sans_semibold"
+                    android:text="@{`• ` + issue.user.login}"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toStartOf="@+id/number"
+                    app:layout_constraintStart_toEndOf="@+id/dateInformation"
+                    app:layout_constraintTop_toTopOf="@+id/dateInformation"
+                    tools:text="• jakewharton" />
+
+                <TextView
+                    android:id="@+id/number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/josefin_sans_semibold"
+                    android:maxLines="1"
+                    android:text="@{`# ` + issue.number}"
+                    app:layout_constraintEnd_toEndOf="@+id/title"
+                    app:layout_constraintTop_toTopOf="@+id/author"
+                    tools:text="# 3188" />
+
+
+                <LinearLayout
+                    android:id="@+id/labelContainer"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:gravity="left"
+                    android:orientation="horizontal"
+                    app:labels="@{issue.labels}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/title">
+
+                    <TextView
+                        style="@style/labelTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/design_default_color_primary_dark"
+                        tools:text="Icebox" />
+
+                    <TextView
+                        style="@style/labelTextStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorAccent"
+                        tools:text="Feature" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    app:issueState="@{issue.state}"
+                    app:layout_constraintStart_toStartOf="@+id/title"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/open_issue" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </FrameLayout>
+    $</androidx.cardview.widget.CardView>
+
+</layout>

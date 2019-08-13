@@ -11,7 +11,9 @@ interface GithubWebservice {
     @GET("repos/{author}/{repo}/issues")
     fun getIssues(@Path("author") author: String,
                   @Path("repo") repo: String,
-                  @Query("state") state: String) : Single<List<Issue>>
+                  @Query("state") state: String = "all",
+                  @Query("per_page") perPage: Int = 100)
+            : Single<List<Issue>>
 
 
 }
