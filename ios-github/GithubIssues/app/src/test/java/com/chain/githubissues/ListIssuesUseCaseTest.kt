@@ -8,14 +8,14 @@ import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.Test
 
-class ListIssuesUseCaseTest{
+class ListIssuesUseCaseTest {
 
-    private val issueRepository : IssueRepository = mock()
+    private val issueRepository: IssueRepository = mock()
 
-    private val listIssuesUseCase  = ListIssuesUseCase(issueRepository)
+    private val listIssuesUseCase = ListIssuesUseCase(issueRepository)
 
     @Test
-    fun `should get closed issues from repository`(){
+    fun `should get closed issues from repository`() {
         listIssuesUseCase.listClosedIssues("author", "repo")
 
         verify(issueRepository, times(1))
@@ -23,7 +23,7 @@ class ListIssuesUseCaseTest{
     }
 
     @Test
-    fun `should get open issues from repository`(){
+    fun `should get open issues from repository`() {
         listIssuesUseCase.listOpenIssues("author", "repo")
 
         verify(issueRepository, times(1))

@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.chain.githubissues.presentation.issueList.IssueListViewModel" />
@@ -18,8 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:data="@{viewModel.issueListLiveData}"
-            tools:listitem="@layout/issue_list_item"
-        />
+            tools:listitem="@layout/issue_list_item" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

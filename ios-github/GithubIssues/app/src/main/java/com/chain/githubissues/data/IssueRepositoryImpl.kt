@@ -6,9 +6,14 @@ import com.chain.githubissues.domain.repository.IssueRepository
 import io.reactivex.Single
 import javax.inject.Inject
 
-class IssueRepositoryImpl @Inject constructor(private val githubWebservice: GithubWebservice) : IssueRepository{
+class IssueRepositoryImpl @Inject constructor(private val githubWebservice: GithubWebservice) :
+    IssueRepository {
 
-    override fun getIssues(author: String, repo: String, issueState: IssueState): Single<List<Issue>> {
+    override fun getIssues(
+        author: String,
+        repo: String,
+        issueState: IssueState
+    ): Single<List<Issue>> {
         return githubWebservice.getIssues(author, repo, issueState.toString())
     }
 

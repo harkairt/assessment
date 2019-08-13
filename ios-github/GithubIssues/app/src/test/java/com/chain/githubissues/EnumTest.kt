@@ -6,7 +6,7 @@ import org.junit.Test
 class EnumTest {
 
     @Test
-    fun `enum should equal to its name`(){
+    fun `enum should equal to its name`() {
         val issueState = IssueState.open
 
         assert(issueState.toString() == "open")

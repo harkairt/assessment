@@ -2,8 +2,8 @@
 <resources>
 
 
-    <attr name="labelTextStyle" format="reference"/>
-    <attr name="primaryFontFace" format="reference"/>
-    <attr name="subFontFace" format="reference"/>
+    <attr name="labelTextStyle" format="reference" />
+    <attr name="primaryFontFace" format="reference" />
+    <attr name="subFontFace" format="reference" />
 
 </resources>

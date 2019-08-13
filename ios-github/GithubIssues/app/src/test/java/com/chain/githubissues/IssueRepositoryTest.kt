@@ -11,12 +11,12 @@ import org.junit.Test
 
 class IssueRepositoryTest {
 
-    private val githubWebservice : GithubWebservice = mock()
+    private val githubWebservice: GithubWebservice = mock()
 
-    private val issueRepository : IssueRepository = IssueRepositoryImpl(githubWebservice)
+    private val issueRepository: IssueRepository = IssueRepositoryImpl(githubWebservice)
 
     @Test
-    fun `should delegate call to webservice with stringified state`(){
+    fun `should delegate call to webservice with stringified state`() {
         issueRepository.getIssues("author", "repo", IssueState.closed)
 
         verify(githubWebservice, times(1))

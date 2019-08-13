@@ -9,11 +9,11 @@ import retrofit2.http.Query
 interface GithubWebservice {
 
     @GET("repos/{author}/{repo}/issues")
-    fun getIssues(@Path("author") author: String,
-                  @Path("repo") repo: String,
-                  @Query("state") state: String = "all",
-                  @Query("per_page") perPage: Int = 50)
-            : Single<List<Issue>>
-
+    fun getIssues(
+        @Path("author") author: String,
+        @Path("repo") repo: String,
+        @Query("state") state: String = "all",
+        @Query("per_page") perPage: Int = 50
+    ): Single<List<Issue>>
 
 }

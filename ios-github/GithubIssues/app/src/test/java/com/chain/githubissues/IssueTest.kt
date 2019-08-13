@@ -1,7 +1,6 @@
 package com.chain.githubissues
 
 import com.chain.githubissues.domain.entity.Issue
-import org.junit.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
 import java.time.LocalDateTime
@@ -18,7 +17,10 @@ class IssueTest {
             "2820, opened 47 hours ago"
         ], delimiter = ','
     )
-    fun `should return opened date in ago format`(minuteOffset: String, expectedDateInformation: String){
+    fun `should return opened date in ago format`(
+        minuteOffset: String,
+        expectedDateInformation: String
+    ) {
         val issue = Issue(created_at = LocalDateTime.now().minusMinutes(minuteOffset.toLong()))
 
         assert(issue.relevanteDateInformation == expectedDateInformation)
@@ -35,15 +37,17 @@ class IssueTest {
             "2820, closed 47 hours ago"
         ], delimiter = ','
     )
-    fun `should return closed date in ago format when closedAt is not null`(minuteOffset: String, expectedDateInformation: String){
+    fun `should return closed date in ago format when closedAt is not null`(
+        minuteOffset: String,
+        expectedDateInformation: String
+    ) {
         val issue = Issue(
-            created_at = LocalDateTime.now(), 
+            created_at = LocalDateTime.now(),
             closed_at = LocalDateTime.now().minusMinutes(minuteOffset.toLong())
         )
 
         assert(issue.relevanteDateInformation == expectedDateInformation)
     }
-
 
 
 }

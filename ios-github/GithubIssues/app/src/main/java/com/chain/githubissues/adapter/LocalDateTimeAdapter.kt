@@ -7,7 +7,7 @@ import java.time.LocalDateTime
 class LocalDateTimeAdapter {
     @FromJson
     fun fromJson(dateString: String): LocalDateTime {
-        val regularDateString = dateString.substring(0, dateString.length-1)
+        val regularDateString = dateString.substring(0, dateString.length - 1)
 
         return LocalDateTime.parse(regularDateString)
     }

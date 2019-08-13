@@ -5,10 +5,7 @@ import android.content.res.Resources
 import android.view.View
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -59,7 +56,10 @@ fun wrappingParams() = LinearLayout.LayoutParams(
     LinearLayout.LayoutParams.WRAP_CONTENT
 )
 
-fun <T> PublishSubject<T>.postInto(liveData: MutableLiveData<T>, onError: (Throwable) -> Unit) : Disposable {
+fun <T> PublishSubject<T>.postInto(
+    liveData: MutableLiveData<T>,
+    onError: (Throwable) -> Unit
+): Disposable {
     return this.subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(

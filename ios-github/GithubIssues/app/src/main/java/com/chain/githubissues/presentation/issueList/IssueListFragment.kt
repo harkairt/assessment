@@ -44,7 +44,11 @@ class IssueListFragment : BaseFragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val binding = IssueListFragmentBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = issueListViewModel
@@ -55,7 +59,8 @@ class IssueListFragment : BaseFragment() {
     }
 
     private fun setupRecyclerView(root: View) {
-        val animation = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation_fall_down)
+        val animation =
+            AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation_fall_down)
 
         root.findViewById<RecyclerView>(R.id.issuesRecyclerView).run {
             setHasFixedSize(false)
@@ -73,7 +78,7 @@ class IssueListFragment : BaseFragment() {
         }
     }
 
-    private fun switchIssueStateFilter(item: MenuItem) : Boolean {
+    private fun switchIssueStateFilter(item: MenuItem): Boolean {
         val currentIssueState = IssueState.from(item.title)
         val newIssueState = currentIssueState.flip()
 

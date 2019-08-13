@@ -14,16 +14,15 @@ class ServiceModule {
 
     private val retrofit: Retrofit by lazy {
         Retrofit.Builder()
-                .baseUrl("https://api.github.com/")
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(
-                        MoshiConverterFactory.create(
-                                Moshi.Builder()
-                                        .add(LocalDateTimeAdapter())
-                                        .build()
-                        )
+            .baseUrl("https://api.github.com/")
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .addConverterFactory(
+                MoshiConverterFactory.create(
+                    Moshi.Builder()
+                        .add(LocalDateTimeAdapter())
+                        .build()
                 )
-                .build()
+            ).build()
     }
 
     @Provides

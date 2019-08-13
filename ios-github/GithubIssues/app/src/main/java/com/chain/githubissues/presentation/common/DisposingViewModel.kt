@@ -12,7 +12,7 @@ open class DisposingViewModel : ViewModel() {
         bag.clear()
     }
 
-    fun Disposable.disposeOnCleared(){
+    fun Disposable.disposeOnCleared() {
         bag.add(this)
     }
 }
