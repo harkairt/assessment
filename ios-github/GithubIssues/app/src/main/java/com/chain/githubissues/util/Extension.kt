@@ -2,10 +2,14 @@ package com.chain.githubissues.util
 
 import android.content.Context
 import android.content.res.Resources
+import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
+import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -56,9 +60,24 @@ fun wrappingParams() = LinearLayout.LayoutParams(
     LinearLayout.LayoutParams.WRAP_CONTENT
 )
 
-fun <T> PublishSubject<T>.postInto(
+fun <T> Observable<T>.postInto(
     liveData: MutableLiveData<T>,
-    onError: (Throwable) -> Unit
+    onError: (Throwable) -> Unit = {Log.e("___", it.localizedMessage)}
+): Disposable {
+    return this.subscribeOn(Schedulers.io())
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(
+            {
+                liveData.postValue(it)
+            },
+            {
+                onError(it)
+            })
+}
+
+fun <T> Single<T>.postInto(
+    liveData: MutableLiveData<T>,
+    onError: (Throwable) -> Unit = {Log.e("___", it.localizedMessage)}
 ): Disposable {
     return this.subscribeOn(Schedulers.io())
         .observeOn(AndroidSchedulers.mainThread())

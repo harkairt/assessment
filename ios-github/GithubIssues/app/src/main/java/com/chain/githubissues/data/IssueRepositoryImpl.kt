@@ -12,9 +12,10 @@ class IssueRepositoryImpl @Inject constructor(private val githubWebservice: Gith
     override fun getIssues(
         author: String,
         repo: String,
-        issueState: IssueState
+        issueState: IssueState,
+        page: Int
     ): Single<List<Issue>> {
-        return githubWebservice.getIssues(author, repo, issueState.toString())
+        return githubWebservice.getIssues(author, repo, issueState.toString(), page)
     }
 
 }

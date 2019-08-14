@@ -2,10 +2,12 @@ package com.chain.githubissues.presentation.issueList
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.chain.githubissues.databinding.IssueListItemBinding
 import com.chain.githubissues.domain.entity.Issue
 import com.chain.githubissues.presentation.common.BaseAdapter
+
 
 class IssueListAdapter(init: IssueListAdapter.() -> Unit) :
     BaseAdapter<IssueListItemViewHolder, Issue>() {
@@ -27,6 +29,13 @@ class IssueListAdapter(init: IssueListAdapter.() -> Unit) :
         super.onBindViewHolder(holder, position, payloads)
         holder.bind(getDataSource()[position])
     }
+
+    override fun bindData(data: List<Issue>) {
+        val diffResult = DiffUtil.calculateDiff(IssuesDiffUtil(getDataSource(), data))
+        super.bindData(data)
+
+        diffResult.dispatchUpdatesTo(this)
+    }
 }
 
 class IssueListItemViewHolder(private val itemBinding: IssueListItemBinding) :
@@ -36,3 +45,5 @@ class IssueListItemViewHolder(private val itemBinding: IssueListItemBinding) :
         itemBinding.issue = issue
     }
 }
+
+

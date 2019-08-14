@@ -6,6 +6,8 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
+const val pageSize = 50
+
 interface GithubWebservice {
 
     @GET("repos/{author}/{repo}/issues")
@@ -13,7 +15,8 @@ interface GithubWebservice {
         @Path("author") author: String,
         @Path("repo") repo: String,
         @Query("state") state: String = "all",
-        @Query("per_page") perPage: Int = 50
+        @Query("page") page: Int = 1,
+        @Query("per_page") perPage: Int = pageSize
     ): Single<List<Issue>>
 
 }

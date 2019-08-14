@@ -11,6 +11,5 @@ abstract class BaseAdapter<VH : RecyclerView.ViewHolder, T> : ClickableAdapter<V
 
     override fun bindData(data: List<T>) {
         this.data = data
-        notifyDataSetChanged()
     }
 }

@@ -28,10 +28,6 @@ fun <T> setData(recyclerView: RecyclerView, data: T) {
 
     if (recyclerView.adapter is BindableAdapter<*>) {
         (recyclerView.adapter as BindableAdapter<T>).bindData(data)
-        recyclerView.scheduleLayoutAnimation()
-
-        val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-        layoutManager.scrollToPositionWithOffset(0, 0)
     }
 }
 

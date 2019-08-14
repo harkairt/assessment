@@ -11,6 +11,8 @@ enum class IssueState {
         return open
     }
 
+    fun issuesOf(repository: Repository) = repository to this
+
     companion object {
         fun from(charSequence: CharSequence): IssueState {
             return valueOf(charSequence.toString().toLowerCase())
