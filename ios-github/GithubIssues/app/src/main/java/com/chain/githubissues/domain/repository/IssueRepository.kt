@@ -8,4 +8,6 @@ interface IssueRepository {
 
     fun getIssues(author: String, repo: String, issueState: IssueState, page: Int = 1): Single<List<Issue>>
 
+    fun getIssue(author: String, repo: String, issueNumber: Int): Single<Issue>
+
 }

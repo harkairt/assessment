@@ -1,6 +1,7 @@
 package com.chain.githubissues
 
 import com.chain.githubissues.domain.entity.Issue
+import com.chain.githubissues.helper.TestIssue
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
 import java.time.LocalDateTime
@@ -21,7 +22,7 @@ class IssueTest {
         minuteOffset: String,
         expectedDateInformation: String
     ) {
-        val issue = Issue(created_at = LocalDateTime.now().minusMinutes(minuteOffset.toLong()))
+        val issue = TestIssue(created_at = LocalDateTime.now().minusMinutes(minuteOffset.toLong()))
 
         assert(issue.relevanteDateInformation == expectedDateInformation)
     }
@@ -41,7 +42,7 @@ class IssueTest {
         minuteOffset: String,
         expectedDateInformation: String
     ) {
-        val issue = Issue(
+        val issue = TestIssue(
             created_at = LocalDateTime.now(),
             closed_at = LocalDateTime.now().minusMinutes(minuteOffset.toLong())
         )

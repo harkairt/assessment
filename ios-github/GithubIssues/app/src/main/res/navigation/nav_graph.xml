@@ -7,5 +7,15 @@
     <fragment
         android:id="@+id/issueListFragment"
         android:name="com.chain.githubissues.presentation.issueList.IssueListFragment"
-        android:label="IssueListFragment" />
+        android:label="IssueListFragment" >
+        <action
+            android:id="@+id/issueListToDetailAction"
+            app:destination="@id/issueDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/issueDetailFragment"
+        android:name="com.chain.githubissues.presentation.issueDetail.IssueDetailFragment"
+        android:label="IssueDetailFragment" />
+
+
 </navigation>

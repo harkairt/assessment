@@ -8,7 +8,6 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chain.githubissues.R
 import com.chain.githubissues.domain.entity.IssueState
@@ -18,9 +17,10 @@ import com.chain.githubissues.util.getResourceColor
 import com.chain.githubissues.util.setRightMargin
 import com.chain.githubissues.util.wrappingParams
 import com.squareup.picasso.Picasso
+import io.noties.markwon.Markwon
 
 @BindingAdapter("data")
-fun <T> setData(recyclerView: RecyclerView, data: T) {
+fun <T> setData(recyclerView: RecyclerView, data: T?) {
     if (data == null) {
         Log.e("____", "recyclerView data binding: data is null!")
         return
@@ -42,13 +42,15 @@ fun loadImage(imageView: ImageView, nullableImagePath: String?) {
 }
 
 @BindingAdapter("issueState")
-fun setIssueStateIcon(imageView: ImageView, issueState: IssueState) {
-    imageView.setImageResource(
-        when (issueState) {
-            IssueState.open -> R.drawable.open_issue
-            IssueState.closed -> R.drawable.closed_issue
-        }
-    )
+fun setIssueStateIcon(imageView: ImageView, issueState: IssueState?) {
+    issueState?.let {
+        imageView.setImageResource(
+            when (issueState) {
+                IssueState.open -> R.drawable.open_issue
+                IssueState.closed -> R.drawable.closed_issue
+            }
+        )
+    }
 }
 
 @BindingAdapter("inProgress")
@@ -58,9 +60,20 @@ fun setInProgress(progressBar: ProgressBar, inProgress: Boolean) {
 }
 
 
+@BindingAdapter("markdown")
+fun setMarkdownText(textView: TextView, markdownString: String?) {
+    markdownString?.let {
+        Markwon.create(textView.context).setMarkdown(textView, markdownString)
+    }
+}
+
+
 @BindingAdapter("labels")
-fun addLabels(viewGroup: ViewGroup, labelList: List<Label>) {
+fun addLabels(viewGroup: ViewGroup, labelList: List<Label>?) {
     viewGroup.removeAllViews()
+
+    if (labelList == null)
+        return
 
     if (labelList.isEmpty()) {
         viewGroup.visibility = View.GONE

@@ -4,6 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
 import com.chain.githubissues.di.ViewModelFactory
+import com.chain.githubissues.domain.entity.Issue
 import kotlin.reflect.KClass
 
 abstract class BaseFragment : Fragment() {

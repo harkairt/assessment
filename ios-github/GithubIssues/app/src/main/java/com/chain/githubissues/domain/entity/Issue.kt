@@ -13,7 +13,8 @@ class Issue(
     val number: Int? = 0,
     val state: IssueState = IssueState.open,
     val title: String? = "",
-    val user: User? = null
+    val user: User? = null,
+    val url: String? = ""
 ) {
     val relevanteDateInformation: String
         get() = if (closed_at == null)

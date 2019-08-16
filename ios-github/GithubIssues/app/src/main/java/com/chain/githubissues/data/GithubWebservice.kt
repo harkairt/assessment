@@ -19,4 +19,11 @@ interface GithubWebservice {
         @Query("per_page") perPage: Int = pageSize
     ): Single<List<Issue>>
 
+    @GET("repos/{author}/{repo}/issues/{issueNumber}")
+    fun getIssue(
+        @Path("author") author: String,
+        @Path("repo") repo: String,
+        @Path("issueNumber") issueNumber: Int
+    ): Single<Issue>
+
 }

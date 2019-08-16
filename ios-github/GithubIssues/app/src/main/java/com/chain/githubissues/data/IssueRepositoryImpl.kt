@@ -14,8 +14,9 @@ class IssueRepositoryImpl @Inject constructor(private val githubWebservice: Gith
         repo: String,
         issueState: IssueState,
         page: Int
-    ): Single<List<Issue>> {
-        return githubWebservice.getIssues(author, repo, issueState.toString(), page)
-    }
+    ): Single<List<Issue>> = githubWebservice.getIssues(author, repo, issueState.toString(), page)
+
+    override fun getIssue(author: String, repo: String, issueNumber: Int): Single<Issue> =
+        githubWebservice.getIssue(author, repo, issueNumber)
 
 }

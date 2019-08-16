@@ -3,18 +3,21 @@ package com.chain.githubissues.presentation.issueList
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chain.githubissues.Injector
 import com.chain.githubissues.R
 import com.chain.githubissues.databinding.IssueListFragmentBinding
 import com.chain.githubissues.di.ViewModelFactory
+import com.chain.githubissues.domain.entity.Issue
 import com.chain.githubissues.domain.entity.IssueState
 import com.chain.githubissues.domain.entity.Repository
 import com.chain.githubissues.presentation.common.BaseFragment
+import com.chain.githubissues.presentation.common.IssueIdentifier
+import com.chain.githubissues.presentation.common.issueIdentifier
+import com.chain.githubissues.util.issueIdentifierKey
 import com.jakewharton.rxbinding3.recyclerview.scrollEvents
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class IssueListFragment : BaseFragment() {
@@ -72,10 +75,16 @@ class IssueListFragment : BaseFragment() {
             onBottomReached { issueListViewModel.requestAdditionalIssues() }
             adapter = IssueListAdapter {
                 onClickAction = { issue ->
-                    Toast.makeText(context, "${issue.title}", Toast.LENGTH_SHORT).show()
+                    navigateToDetailView(issue)
                 }
             }
         }
+    }
+
+    private fun navigateToDetailView(issue: Issue) {
+        findNavController().navigate(R.id.issueListToDetailAction, Bundle().apply {
+            putParcelable(issueIdentifierKey, issue.issueIdentifier)
+        })
     }
 
     private fun switchIssueStateFilter(item: MenuItem): Boolean {
