@@ -3,7 +3,7 @@ package com.chain.githubissues.domain.entity
 import com.chain.githubissues.util.agoFormat
 import java.time.LocalDateTime
 
-class Issue(
+open class Issue(
     val body: String? = "",
     val created_at: LocalDateTime = LocalDateTime.now(),
     val closed_at: LocalDateTime? = null,

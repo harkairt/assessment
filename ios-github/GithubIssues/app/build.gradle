@@ -21,6 +21,9 @@ android {
     androidExtensions {
         experimental = true
     }
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 
     buildTypes {
         release {

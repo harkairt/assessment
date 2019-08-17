@@ -1,6 +1,8 @@
 package com.chain.githubissues
 
+import com.chain.githubissues.domain.entity.IssueQueryParams
 import com.chain.githubissues.domain.entity.IssueState
+import com.chain.githubissues.domain.entity.Repository
 import com.chain.githubissues.domain.repository.IssueRepository
 import com.chain.githubissues.domain.usecase.ListIssuesUseCase
 import com.nhaarman.mockitokotlin2.mock
@@ -16,7 +18,7 @@ class ListIssuesUseCaseTest {
 
     @Test
     fun `should get closed issues from repository`() {
-        listIssuesUseCase.listClosedIssues("author", "repo")
+        listIssuesUseCase.listIssues(IssueQueryParams(Repository("author", "repo"), IssueState.closed), 1)
 
         verify(issueRepository, times(1))
             .getIssues("author", "repo", IssueState.closed)
@@ -24,7 +26,7 @@ class ListIssuesUseCaseTest {
 
     @Test
     fun `should get open issues from repository`() {
-        listIssuesUseCase.listOpenIssues("author", "repo")
+        listIssuesUseCase.listIssues(IssueQueryParams(Repository("author", "repo"), IssueState.open), 1)
 
         verify(issueRepository, times(1))
             .getIssues("author", "repo", IssueState.open)
