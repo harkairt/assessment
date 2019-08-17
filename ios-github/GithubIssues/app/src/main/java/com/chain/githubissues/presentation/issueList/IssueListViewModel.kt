@@ -16,10 +16,21 @@ import javax.inject.Inject
 class IssueListViewModel @Inject constructor(private val listIssuesUseCase: ListIssuesUseCase) :
     DisposingViewModel() {
     private var queryParams: IssueQueryParams = IssueQueryParams(Repository("square", "retrofit"))
-    val issueListLiveData: MutableLiveData<List<Issue>> = MutableLiveData()
+        set(value) {
+            field = value
+            _activeIssueState.postValue(value.issueState)
+        }
+    private val _activeIssueState: MutableLiveData<IssueState> = MutableLiveData<IssueState>().apply{
+        postValue(IssueState.open)
+    }
+    val activeIssueState: LiveData<IssueState> = _activeIssueState
+
+    private val _issueListLiveData: MutableLiveData<List<Issue>> = MutableLiveData()
+    val issueListLiveData: LiveData<List<Issue>> = _issueListLiveData
 
     private val _loadingInProgress: MutableLiveData<Boolean> = MutableLiveData()
     val loadingInProgress: LiveData<Boolean> = _loadingInProgress
+
 
     private val pagerPool =
         PagerPool<IssueQueryParams, Issue>(pageSize) { params, pageNumber ->
@@ -28,7 +39,7 @@ class IssueListViewModel @Inject constructor(private val listIssuesUseCase: List
             onBeforeLoad = {_loadingInProgress.postValue(true)}
             onAfterLoad = {_loadingInProgress.postValue(false)}
             observableList
-                .postInto(issueListLiveData)
+                .postInto(_issueListLiveData)
                 .disposeOnCleared()
         }
 

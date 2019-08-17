@@ -18,6 +18,11 @@ class Issue(
 ) {
     val relevanteDateInformation: String
         get() = if (closed_at == null)
-            "opened ${created_at.agoFormat}"
-        else "closed ${closed_at.agoFormat}"
+            openedAgoFormat
+        else closedAgoFormat!!
+    private val openedAgoFormat: String get() = "opened ${created_at.agoFormat}"
+    private val closedAgoFormat: String?
+        get() = closed_at?.let {
+            "closed ${closed_at.agoFormat}"
+        }
 }

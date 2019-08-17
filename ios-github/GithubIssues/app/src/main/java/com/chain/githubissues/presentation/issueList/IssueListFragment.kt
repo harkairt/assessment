@@ -3,6 +3,7 @@ package com.chain.githubissues.presentation.issueList
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.*
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,7 +15,6 @@ import com.chain.githubissues.domain.entity.Issue
 import com.chain.githubissues.domain.entity.IssueState
 import com.chain.githubissues.domain.entity.Repository
 import com.chain.githubissues.presentation.common.BaseFragment
-import com.chain.githubissues.presentation.common.IssueIdentifier
 import com.chain.githubissues.presentation.common.issueIdentifier
 import com.chain.githubissues.util.issueIdentifierKey
 import com.jakewharton.rxbinding3.recyclerview.scrollEvents
@@ -30,7 +30,6 @@ class IssueListFragment : BaseFragment() {
     }
 
     private val retrofit = Repository("square", "retrofit")
-    private lateinit var listIssueStateSwitchMenuItem: MenuItem
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,12 +42,17 @@ class IssueListFragment : BaseFragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.issue_list_menu, menu)
-        listIssueStateSwitchMenuItem = menu.findItem(R.id.issueState)
+
+        issueListViewModel.activeIssueState.observe(viewLifecycleOwner, Observer {
+            menu.findItem(R.id.issueState)?.let {menuItem ->
+                menuItem.title = it.toString()
+            }
+        })
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.issueState -> switchIssueStateFilter(item)
+            R.id.issueState -> requestIssuesWithState(IssueState.from(item.title).flip())
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -87,12 +91,8 @@ class IssueListFragment : BaseFragment() {
         })
     }
 
-    private fun switchIssueStateFilter(item: MenuItem): Boolean {
-        val currentIssueState = IssueState.from(item.title)
-        val newIssueState = currentIssueState.flip()
-
-        issueListViewModel.requestIssuesOf(retrofit, newIssueState)
-        listIssueStateSwitchMenuItem.title = newIssueState.toString()
+    private fun requestIssuesWithState(issueState: IssueState): Boolean {
+        issueListViewModel.requestIssuesOf(retrofit, issueState)
 
         return true
     }
@@ -109,11 +109,7 @@ fun RecyclerView.onBottomReached(offset: Int = 15, callback: () -> Unit) {
         totalItemCount <= lastVisibleIndex + offset
     }
         .timeInterval()
-        .filter {
-            val time = it.time()
-
-            time > 700
-        }
+        .filter { it.time() > 700 }
         .subscribe { callback() }
 }
 

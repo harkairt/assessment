@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -18,6 +19,7 @@ import com.chain.githubissues.util.setRightMargin
 import com.chain.githubissues.util.wrappingParams
 import com.squareup.picasso.Picasso
 import io.noties.markwon.Markwon
+
 
 @BindingAdapter("data")
 fun <T> setData(recyclerView: RecyclerView, data: T?) {
@@ -46,8 +48,8 @@ fun setIssueStateIcon(imageView: ImageView, issueState: IssueState?) {
     issueState?.let {
         imageView.setImageResource(
             when (issueState) {
-                IssueState.open -> R.drawable.open_issue
-                IssueState.closed -> R.drawable.closed_issue
+                IssueState.open -> com.chain.githubissues.R.drawable.open_issue
+                IssueState.closed -> com.chain.githubissues.R.drawable.closed_issue
             }
         )
     }
@@ -68,6 +70,17 @@ fun setMarkdownText(textView: TextView, markdownString: String?) {
 }
 
 
+@BindingAdapter("hideWhenNull")
+fun <T> hideWhenNull(view: View, data: T?) {
+    view.visibility = if (data == null) View.INVISIBLE else {
+        val startAnimation =
+        AnimationUtils.loadAnimation(view.context, R.anim.fade_in)
+        view.startAnimation(startAnimation)
+        View.VISIBLE
+    }
+}
+
+
 @BindingAdapter("labels")
 fun addLabels(viewGroup: ViewGroup, labelList: List<Label>?) {
     viewGroup.removeAllViews()
@@ -82,7 +95,7 @@ fun addLabels(viewGroup: ViewGroup, labelList: List<Label>?) {
         viewGroup.visibility = View.VISIBLE
 
     labelList.forEach {
-        viewGroup.addView(TextView(viewGroup.context, null, 0, R.style.labelTextStyle).apply {
+        viewGroup.addView(TextView(viewGroup.context, null, 0, com.chain.githubissues.R.style.labelTextStyle).apply {
             layoutParams = wrappingParams().apply {
                 setRightMargin(4.dp)
             }
@@ -90,7 +103,7 @@ fun addLabels(viewGroup: ViewGroup, labelList: List<Label>?) {
             setBackgroundColor(
                 when {
                     it.color != null -> Color.parseColor("#${it.color.toUpperCase()}")
-                    else -> getResourceColor(R.color.primaryDarkText)
+                    else -> getResourceColor(com.chain.githubissues.R.color.primaryDarkText)
                 }
             )
         })
