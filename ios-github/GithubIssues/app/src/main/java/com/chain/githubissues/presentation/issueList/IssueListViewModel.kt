@@ -9,20 +9,24 @@ import com.chain.githubissues.domain.entity.IssueState
 import com.chain.githubissues.domain.entity.Repository
 import com.chain.githubissues.domain.usecase.ListIssuesUseCase
 import com.chain.githubissues.presentation.common.DisposingViewModel
-import com.chain.githubissues.util.PagerPool
+import com.chain.githubissues.util.PagerPoolFactory
 import com.chain.githubissues.util.postInto
 import javax.inject.Inject
 
-class IssueListViewModel @Inject constructor(private val listIssuesUseCase: ListIssuesUseCase) :
+class IssueListViewModel @Inject constructor(
+    private val listIssuesUseCase: ListIssuesUseCase,
+    private val pagerPoolFactory: PagerPoolFactory
+) :
     DisposingViewModel() {
     private var queryParams: IssueQueryParams = IssueQueryParams(Repository("square", "retrofit"))
         set(value) {
             field = value
             _activeIssueState.postValue(value.issueState)
         }
-    private val _activeIssueState: MutableLiveData<IssueState> = MutableLiveData<IssueState>().apply{
-        postValue(IssueState.open)
-    }
+    private val _activeIssueState: MutableLiveData<IssueState> =
+        MutableLiveData<IssueState>().apply {
+            postValue(IssueState.open)
+        }
     val activeIssueState: LiveData<IssueState> = _activeIssueState
 
     private val _issueListLiveData: MutableLiveData<List<Issue>> = MutableLiveData()
@@ -33,11 +37,11 @@ class IssueListViewModel @Inject constructor(private val listIssuesUseCase: List
 
 
     private val pagerPool =
-        PagerPool<IssueQueryParams, Issue>(pageSize) { params, pageNumber ->
+        pagerPoolFactory.createPagerPool<IssueQueryParams, Issue>(pageSize) { params, pageNumber ->
             listIssuesUseCase.listIssues(params, pageNumber)
         }.apply {
-            onBeforeLoad = {_loadingInProgress.postValue(true)}
-            onAfterLoad = {_loadingInProgress.postValue(false)}
+            onBeforeLoad = { _loadingInProgress.postValue(true) }
+            onAfterLoad = { _loadingInProgress.postValue(false) }
             observableList
                 .postInto(_issueListLiveData)
                 .disposeOnCleared()
